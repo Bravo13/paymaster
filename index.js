@@ -86,6 +86,9 @@ Paymaster.prototype.buildBillData = function( config ) {
 	if( config['desc'] === undefined && config['desc_b64'] === undefined )
 		return new Error('No description or base64-encoded description');
 
+	if( tmis.mid === undefined && !/^\d+$/.test(this.mid) )
+		return new Error('No merchant id');
+
 	var data = {};
 	var url_parts = [];
 	for(var i in config){
@@ -100,6 +103,7 @@ Paymaster.prototype.buildBillData = function( config ) {
 	}
 
 	data.LMI_HASH = this.makeHash(config);
+	data.LMI_MERCHANT_ID = this.mid;
 	return data;
 }
 
