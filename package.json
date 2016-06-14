@@ -1,0 +1,18 @@
+{
+  "name": "paymaster",
+  "version": "0.0.0",
+  "description": "Nodejs wrapper for Paymaster.ua API",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Bravo13/paymaster"
+  },
+  "author": "Bravo13",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/Bravo13/paymaster/issues"
+  }
+}
