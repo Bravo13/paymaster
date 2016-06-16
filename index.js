@@ -75,19 +75,19 @@ Paymaster.prototype.makeHash = function( config ){
 
 	switch(this.hash_type.toLowerCase()) {
 		case 'sha256':	return crypto.createHash('sha256').update(string).digest('hex');
-		default: return new Error('Incorrect hash type '+this.hashType);
+		default: throw new Error('Incorrect hash type '+this.hashType);
 	}
 }
 
 Paymaster.prototype.buildBillData = function( config ) {
 	if( config['amount'] === undefined || !/[\d+\.]+/.test(config.amount) )
-		return new Error('Amount not defined');
+		throw new Error('Amount not defined');
 
 	if( config['desc'] === undefined && config['desc_b64'] === undefined )
-		return new Error('No description or base64-encoded description');
+		throw new Error('No description or base64-encoded description');
 
 	if( this.mid === undefined && !/^\d+$/.test(this.mid) )
-		return new Error('No merchant id');
+		throw new Error('No merchant id');
 
 	var data = {};
 	var url_parts = [];
@@ -97,7 +97,7 @@ Paymaster.prototype.buildBillData = function( config ) {
 		if( fields[i] != undefined ){
 			key = fields[i].title;
 			if(fields[i].validator !== undefined && !fields[i].validator.test(value))
-				return new Error('Incorrect value "'+value+'" for field "'+i+'"');
+				throw new Error('Incorrect value "'+value+'" for field "'+i+'"');
 		}
 		data[key] = value;
 	}
