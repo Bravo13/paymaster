@@ -1,6 +1,6 @@
 {
   "name": "paymaster",
-  "version": "0.0.0.1",
+  "version": "0.0.2",
   "description": "Nodejs wrapper for Paymaster.ua API",
   "main": "index.js",
   "scripts": {
