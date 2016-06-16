@@ -79,6 +79,13 @@ Paymaster.prototype.makeHash = function( config ){
 	}
 }
 
+Paymaster.prototype.getBaseUrl = function() {
+	if( config['lang'] === undefined || !/(en|ru|uk)/.test(config.lang) )
+		config.lang = 'en';
+
+	return 'https://lmi.paymaster.ua/'+config.lang;
+}
+
 Paymaster.prototype.buildBillData = function( config ) {
 	if( config['amount'] === undefined || !/[\d+\.]+/.test(config.amount) )
 		throw new Error('Amount not defined');
@@ -108,12 +115,9 @@ Paymaster.prototype.buildBillData = function( config ) {
 }
 
 Paymaster.prototype.getPayUrl = function( config ){
-	if( config['lang'] === undefined || !/(en|ru|uk)/.test(config.lang) )
-		config.lang = 'en';
-
 	var billData = this.buildBillData(config);
 
-	return 'https://lmi.paymaster.ua/'+config.lang+'/?'+Object.keys(billData).map(function(element){ return element+'='+billData[element] }).join('&');
+	return this.getBaseUrl()+'/?'+Object.keys(billData).map(function(element){ return element+'='+billData[element] }).join('&');
 }
 
 
