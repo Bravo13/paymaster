@@ -71,15 +71,23 @@ function Paymaster( config ) {
 
 Paymaster.prototype.makeHash = function( config ){
 
-	var string = config.mid + config.order_id + config.amount + this.secret;
+	var fieldsOrder = ['order_id', 'sys_payment_id', 'sys_payment_date', 'amount', 'paid_amount', 'payment_system', 'mode'];
+	var string = this.mid;
+	for(var i = 0; i<fieldsOrder.length; i++){
+		if(config[fieldsOrder[i]] != undefined)
+			string += config[fieldsOrder[i]];
+	}
+	string += this.secret;
 
 	switch(this.hash_type.toLowerCase()) {
-		case 'sha256':	return crypto.createHash('sha256').update(string).digest('hex');
+		case 'sha256':	return crypto.createHash('sha256').update(string).digest('hex').toUpperCase();
 		default: throw new Error('Incorrect hash type '+this.hashType);
 	}
 }
 
-Paymaster.prototype.getBaseUrl = function() {
+Paymaster.prototype.getBaseUrl = function(config) {
+	if( config === undefined )
+		config = {};
 	if( config['lang'] === undefined || !/(en|ru|uk)/.test(config.lang) )
 		config.lang = 'en';
 
@@ -117,7 +125,7 @@ Paymaster.prototype.buildBillData = function( config ) {
 Paymaster.prototype.getPayUrl = function( config ){
 	var billData = this.buildBillData(config);
 
-	return this.getBaseUrl()+'/?'+Object.keys(billData).map(function(element){ return element+'='+billData[element] }).join('&');
+	return this.getBaseUrl(config)+'/?'+Object.keys(billData).map(function(element){ return element+'='+billData[element] }).join('&');
 }
 
 
